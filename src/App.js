@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import Popup from "./popup";
+import MyInput from "./MyInput";
 function App() {
   const [myFormInput, setMyFormInput] = useState({
     name: "",
@@ -29,40 +30,40 @@ function App() {
     setPopupMessage("Form submitted successfully!");
     setShowPopup(true);
   };
+  function handelmyInputNameChange(value) {
+    setMyFormInput({ ...myFormInput, name: value });
+  }
+
+  function handelmyInputPhoneNumberChange(value) {
+    setMyFormInput({ ...myFormInput, phoneNumber: value });
+  }
+
+  function handelmyInputAgeChange(value) {
+    setMyFormInput({ ...myFormInput, age: value });
+  }
+
   return (
     <div className="App">
       <form className="form-container" onSubmit={handelSubmit}>
         <h1>Requesting a Loan</h1>
         <hr />
 
-        <label className="label">Name:</label>
-        <input
+        <MyInput
           value={myFormInput.name}
-          onChange={(event) => {
-            setMyFormInput({ ...myFormInput, name: event.target.value });
-          }}
-          className="input"
-          type="text"
+          handelChange={handelmyInputNameChange}
+          inputName="name : "
         />
 
-        <label className="label">Phone Number:</label>
-        <input
+        <MyInput
           value={myFormInput.phoneNumber}
-          onChange={(event) => {
-            setMyFormInput({ ...myFormInput, phoneNumber: event.target.value });
-          }}
-          className="input"
-          type="text"
+          handelChange={handelmyInputPhoneNumberChange}
+          inputName="Phone Number : "
         />
 
-        <label className="label">Age:</label>
-        <input
-          type="number"
+        <MyInput
           value={myFormInput.age}
-          onChange={(event) => {
-            setMyFormInput({ ...myFormInput, age: event.target.value });
-          }}
-          className="input"
+          inputName=" Age : "
+          handelChange={handelmyInputAgeChange}
         />
 
         <label className="label">Are you an employee?</label>
@@ -91,7 +92,16 @@ function App() {
           <option>more than 1000$</option>
         </select>
 
-        <button className="submit-button">Submit</button>
+        <button
+          disabled={
+            myFormInput.name == "" ||
+            myFormInput.age == "" ||
+            myFormInput.phoneNumber == ""
+          }
+          className="submit-button"
+        >
+          Submit
+        </button>
       </form>
       {showPopup && (
         <Popup message={popupMessage} onClose={() => setShowPopup(false)} />
